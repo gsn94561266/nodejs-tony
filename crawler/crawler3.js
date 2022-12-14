@@ -1,20 +1,9 @@
-const fs = require("fs");
 const axios = require("axios");
-// http://54.71.133.152:3000/stocks?stockNo=2618&date=202211
-//2618, 2330, 2412
-let p = new Promise((resolve, reject) => {
-  fs.readFile("stock.txt", "utf-8", (err, data) => {
-    if (err) {
-      reject(err);
-    } else {
-      resolve(data);
-    }
-  });
-});
+const fs = require("fs/promises");
 
 (async () => {
   try {
-    let stockNo = await p;
+    let stockNo = await fs.readFile("stock.txt", "utf-8");
     let date = "20221111";
     let response = await axios.get(`http://54.71.133.152:3000/stocks`, {
       params: {
@@ -22,7 +11,7 @@ let p = new Promise((resolve, reject) => {
         date,
       },
     });
-    console.log("await", response.data);
+    console.log(response.data);
   } catch (e) {
     console.error(e);
   }
