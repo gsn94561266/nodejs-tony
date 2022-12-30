@@ -77,9 +77,9 @@ app.get('/api/stocks', async (req, res, next) => {
 // SELECT * FROM stock_prices WHERE stock_id=2330
 
 // sql injection
-// localhost:3001/api/stocks/1234 or 1=1;--
-// req.params.stockId => 1234 or 1=1;--
-// SELECT * FROM stock_prices WHERE stock_id=1234 or 1=1;--
+// localhost:3001/api/stocks/1234 or 1=1;
+// req.params.stockId => 1234 or 1=1;
+// SELECT * FROM stock_prices WHERE stock_id=1234 or 1=1;
 app.get('/api/stocks/:stockId', async (req, res, next) => {
   console.log('/api/stocks/:stockId => ', req.params.stockId);
   // 會用 prepared statement 的方式來避免發生 sql injection
@@ -89,11 +89,11 @@ app.get('/api/stocks/:stockId', async (req, res, next) => {
   res.json(data);
 });
 
-app.post('/api/stocks', (req, res) => {
+app.post('/api/stocks', async (req, res) => {
   console.log('POST /api/stocks', req.body);
   // req.body.stockId, req.body.stockName
   // TODO: 完成 insert
-  // let results = await pool.query("");
+  let [data] = await pool.query('INSERT INTO stocks (id, name) VALUES (?,?)', [req.body.stockId, req.body.stockName]);
   // console.log(results);
   res.json({});
 });

@@ -29,8 +29,9 @@ const Stock = () => {
   }, [counter]);
 
   // TODO: 把預設值拿掉，跟 input 綁定
-  const [stockId, setStockId] = useState('5678');
-  const [stockName, setStockName] = useState('耶誕快樂');
+  const [stockId, setStockId] = useState('');
+  const [stockName, setStockName] = useState('');
+
   async function handleSubmit(e) {
     console.log('handleSubmit');
     e.preventDefault();
@@ -39,6 +40,7 @@ const Stock = () => {
       stockName,
     });
     console.log(response.data);
+    window.location.reload();
   }
 
   return (
@@ -53,6 +55,7 @@ const Stock = () => {
         add {counter}
       </button>
 
+      {/* 股票清單 */}
       {stocks.map((stock, index) => {
         return (
           <div
@@ -68,6 +71,7 @@ const Stock = () => {
         );
       })}
 
+      {/* 新增股票 */}
       <form className="bg-purple-100 h-screen md:h-full md:my-20 md:mx-16 lg:mx-28 xl:mx-40 py-16 md:py-8 px-24 text-gray-800 md:shadow md:rounded flex flex-col md:justify-center">
         <h2 className="flex justify-center text-3xl mb-6 border-b-2 pb-2 border-gray-300">
           新增股票
@@ -77,6 +81,10 @@ const Stock = () => {
             股票代碼
           </label>
           <input
+            value={stocks.id}
+            onChange={(e) => {
+              setStockId(e.target.value);
+            }}
             className="w-full border-2 border-purple-200 rounded-md h-10 focus:outline-none focus:border-purple-400 px-2"
             type="text"
             id="stockId"
@@ -88,6 +96,10 @@ const Stock = () => {
             股票名稱
           </label>
           <input
+            value={stocks.name}
+            onChange={(e) => {
+              setStockName(e.target.value);
+            }}
             className="w-full border-2 border-purple-200 rounded-md h-10 focus:outline-none focus:border-purple-400 px-2"
             type="text"
             id="stockName"
