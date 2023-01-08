@@ -1,4 +1,57 @@
+import { useState } from 'react';
+import axios from 'axios';
+
 const Register = () => {
+  const [member, setMember] = useState({
+    email: 'gsn94561266@gmail.com',
+    name: 'Tony',
+    password: '12345',
+    confirmPassword: '12345',
+    photo: '',
+  });
+
+  // email input 的 change
+  // e.target ==> email input
+  // name input 的 change
+  // e.target ==> name input
+  function handleChange(e) {
+    // console.log(e);
+    let newMember = { ...member };
+    newMember[e.target.name] = e.target.value;
+    setMember(newMember);
+
+    // setMember({ ...member, [e.target.name]: e.target.value }); // 簡化寫法
+  }
+
+  function handleUpload(e) {
+    // file input 的值並不是存在 value 欄位裡
+    setMember({ ...member, photo: e.target.file[0] });
+  }
+  async function handleSubmit(e) {
+    console.log('handleSubmit');
+    // 關閉表單的預設行為
+    e.preventDefault();
+    // 方法1: 沒有檔案的表單 -> application/json
+    // ajax
+    // let response = await axios.post(
+    //   'http://localhost:3001/api/auth/register',
+    //   member
+    // );
+    // 方法2: 有檔案的表單 -> multipart/form-data
+    // https://developer.mozilla.org/en-US/docs/Web/API/FormData
+    let formData = new FormData();
+    formData.append('email', member.email);
+    formData.append('name', member.name);
+    formData.append('password', member.password);
+    formData.append('confirmPassword', member.confirmPassword);
+    formData.append('photo', member.photo);
+    let response = await axios.post(
+      'http://localhost:3001/api/auth/register',
+      formData
+    );
+    console.log(response.data);
+  }
+
   return (
     <form className="bg-purple-100 h-screen md:h-full md:my-20 md:mx-16 lg:mx-28 xl:mx-40 py-16 md:py-8 px-24 text-gray-800 md:shadow md:rounded flex flex-col md:justify-center">
       <h2 className="flex justify-center text-3xl mb-6 border-b-2 pb-2 border-gray-300">
@@ -13,6 +66,8 @@ const Register = () => {
           type="text"
           id="email"
           name="email"
+          value={member.email}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-4 text-2xl">
@@ -24,6 +79,8 @@ const Register = () => {
           type="text"
           id="name"
           name="name"
+          value={member.name}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-4 text-2xl">
@@ -35,6 +92,8 @@ const Register = () => {
           type="password"
           id="password"
           name="password"
+          value={member.password}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-8 text-2xl">
@@ -46,6 +105,8 @@ const Register = () => {
           type="password"
           id="confirmPassword"
           name="confirmPassword"
+          value={member.confirmPassword}
+          onChange={handleChange}
         />
       </div>
       <div className="mb-8 text-2xl">
@@ -57,9 +118,12 @@ const Register = () => {
           type="file"
           id="photo"
           name="photo"
+          onChange={handleUpload}
         />
       </div>
-      <button className="text-xl bg-indigo-300 px-4 py-2.5 rounded hover:bg-indigo-400 transition duration-200 ease-in">
+      <button
+        className="text-xl bg-indigo-300 px-4 py-2.5 rounded hover:bg-indigo-400 transition duration-200 ease-in"
+        onClick={handleSubmit}>
         註冊
       </button>
     </form>

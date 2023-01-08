@@ -29,18 +29,19 @@ const Stock = () => {
   }, [counter]);
 
   // TODO: 把預設值拿掉，跟 input 綁定
-  const [stockId, setStockId] = useState('');
-  const [stockName, setStockName] = useState('');
+  const [stockId, setStockId] = useState('5678');
+  const [stockName, setStockName] = useState('聖誕快樂');
 
   async function handleSubmit(e) {
     console.log('handleSubmit');
+    // 關閉表單的預設行為
     e.preventDefault();
+    // ajax
     let response = await axios.post('http://localhost:3001/api/stocks', {
       stockId,
       stockName,
     });
     console.log(response.data);
-    window.location.reload();
   }
 
   return (
@@ -81,9 +82,9 @@ const Stock = () => {
             股票代碼
           </label>
           <input
-            value={stocks.id}
-            onChange={(e) => {
-              setStockId(e.target.value);
+            value={stockId}
+            onChange={(event) => {
+              setStockId(event.target.value);
             }}
             className="w-full border-2 border-purple-200 rounded-md h-10 focus:outline-none focus:border-purple-400 px-2"
             type="text"
@@ -96,9 +97,9 @@ const Stock = () => {
             股票名稱
           </label>
           <input
-            value={stocks.name}
-            onChange={(e) => {
-              setStockName(e.target.value);
+            value={stockName}
+            onChange={(event) => {
+              setStockName(event.target.value);
             }}
             className="w-full border-2 border-purple-200 rounded-md h-10 focus:outline-none focus:border-purple-400 px-2"
             type="text"

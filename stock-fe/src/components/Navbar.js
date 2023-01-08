@@ -1,7 +1,14 @@
 import { Link, NavLink } from 'react-router-dom';
 import Logo from '../img/fish.png';
+import axios from 'axios';
 
 const Navbar = () => {
+  async function handleLogout() {
+    await axios.get('http://localhost:3001/api/auth/logout', {
+      withCredentials: true,
+    });
+  }
+
   return (
     <nav className="bg-indigo-100 px-10 py-3 flex justify-between items-center sticky shadow">
       <Link to={'/'}>
@@ -15,15 +22,13 @@ const Navbar = () => {
         <NavLink
           to="/"
           className="text-xl text-gray-700 text-opacity-70 mx-3 md:mx-6 hover:text-opacity-90"
-          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}
-        >
+          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}>
           股票
         </NavLink>
         <NavLink
           to="/about"
           className="text-xl text-gray-700 text-opacity-70 mx-3 md:mx-6 hover:text-opacity-90"
-          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}
-        >
+          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}>
           關於
         </NavLink>
         {/* 登入後顯示的 */}
@@ -32,22 +37,20 @@ const Navbar = () => {
         <Link
           to="/about"
           className="text-xl text-gray-700 text-opacity-70 mx-3 md:mx-6 hover:text-opacity-90"
-        >
+          onClick={handleLogout}>
           登出
         </Link>
         {/* 登入前顯示的 */}
         <NavLink
           to="/login"
           className="text-xl text-gray-700 text-opacity-70 mx-3 md:mx-6 hover:text-opacity-90"
-          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}
-        >
+          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}>
           登入
         </NavLink>
         <NavLink
           to="/register"
           className="text-xl text-gray-700 text-opacity-70 mx-3 md:mx-6 hover:text-opacity-90"
-          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}
-        >
+          activestyle={{ fontWeight: 'bold', color: '#3B82F6' }}>
           註冊
         </NavLink>
       </div>
